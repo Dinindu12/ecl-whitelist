@@ -3,49 +3,168 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MTA Whitelist Application</title>
+  <title>Eclipse Roleplay | Whitelist Application</title>
+  <meta name="description" content="Apply to join Eclipse Roleplay - Sri Lanka's #1 FiveM Style MTA Server">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Animated background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
   <div class="wrap">
-    <header class="head">
-      <h1>Whitelist Application</h1>
-      <p class="sub">Apply to join the server</p>
+    <!-- Header / Hero -->
+    <header class="hero">
+      <div class="logo-badge">
+        <span class="logo-dot"></span>
+        <span>Eclipse Roleplay</span>
+      </div>
+
+      <h1 class="title">
+        <span class="title-main">Whitelist</span>
+        <span class="title-accent">Application</span>
+      </h1>
+
+      <p class="subtitle">
+        Sri Lanka's <span class="highlight">#1 FiveM Style</span> MTA Server.
+        <br>
+        Apply to join the community.
+      </p>
+
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">Online</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">100+</div>
+          <div class="stat-label">Players</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">Roleplay</div>
+          <div class="stat-label">Serious RP</div>
+        </div>
+      </div>
     </header>
 
+    <!-- Main Card -->
     <main class="card">
-      <form id="applyForm">
-        <label>Player Name</label>
-        <input type="text" id="player_name" required placeholder="Your MTA name">
+      <div class="card-glow"></div>
 
-        <label>Serial</label>
-        <input type="text" id="serial" required placeholder="32 character serial" maxlength="32">
+      <div class="card-header">
+        <div class="step-badges">
+          <div class="step-badge active">
+            <span class="step-num">1</span>
+            <span>Apply</span>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step-badge">
+            <span class="step-num">2</span>
+            <span>Review</span>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step-badge">
+            <span class="step-num">3</span>
+            <span>Play</span>
+          </div>
+        </div>
+      </div>
 
-        <label>IC Name</label>
-        <input type="text" id="ic_name" required placeholder="In-character name">
+      <form id="applyForm" class="form">
+        <div class="field">
+          <label for="player_name">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Player Name
+          </label>
+          <input type="text" id="player_name" required placeholder="Your MTA in-game name" autocomplete="off">
+        </div>
 
-        <label>Discord (optional)</label>
-        <input type="text" id="discord" placeholder="username">
+        <div class="field">
+          <label for="serial">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01"/></svg>
+            Serial
+            <span class="hint">F8 → "Serial" in MTA</span>
+          </label>
+          <input type="text" id="serial" required placeholder="32-character hex serial" maxlength="32" autocomplete="off" spellcheck="false">
+          <div class="field-help">
+            <span id="serialCount">0 / 32</span>
+            <span id="serialStatus"></span>
+          </div>
+        </div>
 
-        <label>Reason (optional)</label>
-        <textarea id="reason" rows="3" placeholder="Why should you be whitelisted?"></textarea>
+        <div class="field">
+          <label for="ic_name">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            IC Name
+          </label>
+          <input type="text" id="ic_name" required placeholder="In-character full name" autocomplete="off">
+        </div>
 
-        <button type="submit" id="submitBtn">Submit Application</button>
+        <div class="field-row">
+          <div class="field">
+            <label for="discord">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+              Discord <span class="optional">optional</span>
+            </label>
+            <input type="text" id="discord" placeholder="username" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="reason">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Why should we accept you? <span class="optional">optional</span>
+          </label>
+          <textarea id="reason" rows="3" placeholder="Tell us about your roleplay experience..." maxlength="500"></textarea>
+          <div class="field-help">
+            <span id="reasonCount">0 / 500</span>
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-primary">
+          <span class="btn-text">Submit Application</span>
+          <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
         <p id="formMsg" class="msg"></p>
       </form>
 
-      <hr>
+      <!-- Status Check Section -->
+      <div class="status-section">
+        <div class="divider">
+          <span>Already applied?</span>
+        </div>
 
-      <h2>Check Status</h2>
-      <div class="status-row">
-        <input type="text" id="checkSerial" placeholder="Enter your serial" maxlength="32">
-        <button type="button" id="checkBtn">Check</button>
+        <h3 class="status-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Check Application Status
+        </h3>
+
+        <div class="status-row">
+          <input type="text" id="checkSerial" placeholder="Enter your serial" maxlength="32" spellcheck="false" autocomplete="off">
+          <button type="button" id="checkBtn" class="btn-secondary">Check</button>
+        </div>
+        <p id="statusMsg" class="msg"></p>
       </div>
-      <p id="statusMsg" class="msg"></p>
     </main>
 
+    <!-- Footer -->
     <footer class="foot">
-      <a href="admin.html">Admin Login</a>
+      <div class="foot-links">
+        <a href="admin.html" class="foot-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Admin Login
+        </a>
+      </div>
+      <p class="foot-copy">© 2026 Eclipse Roleplay. All rights reserved.</p>
     </footer>
   </div>
 
