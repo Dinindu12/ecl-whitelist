@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap" style="max-width: 700px;">
+    <header class="head">
+      <h1>Admin Dashboard</h1>
+      <button id="logoutBtn" class="logout" style="display:none">Logout</button>
+    </header>
+
+    <div id="loginPanel">
+      <div class="card">
+        <form id="loginForm">
+          <label>Username</label>
+          <input type="text" id="username" required>
+          <label>Password</label>
+          <input type="password" id="password" required>
+          <button type="submit">Login</button>
+          <p id="loginMsg" class="msg"></p>
+        </form>
+      </div>
+    </div>
+
+    <div id="dashboardPanel" style="display:none">
+      <div class="filters">
+        <a href="#" data-filter="all" class="active">All</a>
+        <a href="#" data-filter="pending">Pending</a>
+        <a href="#" data-filter="approved">Approved</a>
+        <a href="#" data-filter="rejected">Rejected</a>
+      </div>
+      <div id="applications"></div>
+    </div>
+  </div>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

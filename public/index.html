@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTA Whitelist Application</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="head">
+      <h1>Whitelist Application</h1>
+      <p class="sub">Apply to join the server</p>
+    </header>
+
+    <main class="card">
+      <form id="applyForm">
+        <label>Player Name</label>
+        <input type="text" id="player_name" required placeholder="Your MTA name">
+
+        <label>Serial</label>
+        <input type="text" id="serial" required placeholder="32 character serial" maxlength="32">
+
+        <label>IC Name</label>
+        <input type="text" id="ic_name" required placeholder="In-character name">
+
+        <label>Discord (optional)</label>
+        <input type="text" id="discord" placeholder="username">
+
+        <label>Reason (optional)</label>
+        <textarea id="reason" rows="3" placeholder="Why should you be whitelisted?"></textarea>
+
+        <button type="submit" id="submitBtn">Submit Application</button>
+        <p id="formMsg" class="msg"></p>
+      </form>
+
+      <hr>
+
+      <h2>Check Status</h2>
+      <div class="status-row">
+        <input type="text" id="checkSerial" placeholder="Enter your serial" maxlength="32">
+        <button type="button" id="checkBtn">Check</button>
+      </div>
+      <p id="statusMsg" class="msg"></p>
+    </main>
+
+    <footer class="foot">
+      <a href="admin.html">Admin Login</a>
+    </footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

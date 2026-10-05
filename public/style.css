@@ -1,0 +1,72 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #0f1115;
+  color: #e6e6e6;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.wrap { width: 100%; max-width: 480px; }
+.head { text-align: center; margin-bottom: 20px; }
+.head h1 { font-size: 1.6rem; color: #4da6ff; }
+.sub { color: #888; font-size: 0.9rem; }
+
+.card {
+  background: #1a1d24;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+label { display: block; margin: 12px 0 6px; font-size: 0.9rem; color: #bbb; }
+input, textarea {
+  width: 100%; padding: 12px; border-radius: 8px;
+  border: 1px solid #2c313c; background: #0f1115; color: #fff; font-size: 1rem;
+}
+input:focus, textarea:focus { outline: none; border-color: #4da6ff; }
+
+button {
+  width: 100%; padding: 12px; margin-top: 16px;
+  border: none; border-radius: 8px;
+  background: #4da6ff; color: #fff;
+  font-weight: 600; font-size: 1rem; cursor: pointer;
+}
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+hr { border: none; border-top: 1px solid #2c313c; margin: 24px 0; }
+h2 { font-size: 1.2rem; margin-bottom: 12px; }
+
+.status-row { display: flex; gap: 8px; }
+.status-row input { flex: 1; }
+.status-row button { width: auto; margin-top: 0; padding: 12px 16px; }
+
+.msg { margin-top: 10px; font-size: 0.9rem; min-height: 1.2em; }
+.msg.ok { color: #4caf50; }
+.msg.err { color: #ff5252; }
+
+.foot { text-align: center; margin-top: 20px; font-size: 0.85rem; }
+.foot a { color: #4da6ff; text-decoration: none; }
+
+/* Admin */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.filters a { padding: 6px 12px; border-radius: 20px; background: #2c313c; color: #ccc; text-decoration: none; font-size: 0.85rem; }
+.filters a.active { background: #4da6ff; color: #fff; }
+.app { background: #0f1115; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #2c313c; }
+.app h3 { font-size: 1rem; color: #4da6ff; margin-bottom: 4px; }
+.app p { font-size: 0.85rem; color: #aaa; margin: 2px 0; }
+.app .status { font-weight: 600; text-transform: uppercase; }
+.app .status.pending { color: #ffb74d; }
+.app .status.approved { color: #4caf50; }
+.app .status.rejected { color: #ff5252; }
+.actions { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+.actions button {
+  width: auto; margin-top: 0; padding: 6px 12px; font-size: 0.8rem;
+}
+.actions button.approve { background: #4caf50; }
+.actions button.reject  { background: #ff5252; }
+.actions button.delete  { background: #555; }
+.logout { background: none; border: none; color: #ff5252; padding: 0; width: auto; margin: 0; font-size: 0.9rem; cursor: pointer; }
