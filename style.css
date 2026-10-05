@@ -63,9 +63,7 @@ h2 { font-size: 1.2rem; margin-bottom: 12px; }
 .app .status.approved { color: #4caf50; }
 .app .status.rejected { color: #ff5252; }
 .actions { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
-.actions button {
-  width: auto; margin-top: 0; padding: 6px 12px; font-size: 0.8rem;
-}
+.actions button { width: auto; margin-top: 0; padding: 6px 12px; font-size: 0.8rem; }
 .actions button.approve { background: #4caf50; }
 .actions button.reject  { background: #ff5252; }
 .actions button.delete  { background: #555; }

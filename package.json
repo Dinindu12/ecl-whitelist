@@ -1,8 +1,0 @@
-{
-    "name": "ecl-whitelist",
-    "version": "1.0.0",
-    "dependencies": {
-      "mysql2": "^3.9.7",
-      "jsonwebtoken": "^9.0.2"
-    }
-  }
