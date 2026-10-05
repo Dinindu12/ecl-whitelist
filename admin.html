@@ -3,38 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
+  <title>Admin Dashboard | Eclipse Roleplay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrap" style="max-width: 700px;">
-    <header class="head">
-      <h1>Admin Dashboard</h1>
-      <button id="logoutBtn" class="logout" style="display:none">Logout</button>
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="wrap admin-wrap">
+    <header class="admin-header">
+      <div class="admin-header-left">
+        <div class="logo-badge">
+          <span class="logo-dot"></span>
+          <span>Eclipse Roleplay</span>
+        </div>
+        <h1 class="admin-title">Admin Dashboard</h1>
+        <p class="admin-sub">Manage whitelist applications</p>
+      </div>
+      <button id="logoutBtn" class="btn-ghost" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
     </header>
 
     <div id="loginPanel">
-      <div class="card">
-        <form id="loginForm">
-          <label>Email</label>
-          <input type="email" id="email" required>
-          <label>Password</label>
-          <input type="password" id="password" required>
-          <button type="submit">Login</button>
+      <div class="card login-card">
+        <div class="card-glow"></div>
+        <div class="login-header">
+          <div class="login-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h2>Admin Login</h2>
+          <p>Sign in with your Firebase account</p>
+        </div>
+
+        <form id="loginForm" class="form">
+          <div class="field">
+            <label for="email">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email
+            </label>
+            <input type="email" id="email" required placeholder="admin@ecl.com" autocomplete="email">
+          </div>
+
+          <div class="field">
+            <label for="password">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Password
+            </label>
+            <input type="password" id="password" required placeholder="••••••••" autocomplete="current-password">
+          </div>
+
+          <button type="submit" class="btn-primary">
+            <span class="btn-text">Login</span>
+            <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
           <p id="loginMsg" class="msg"></p>
         </form>
       </div>
     </div>
 
     <div id="dashboardPanel" style="display:none">
+      <div class="admin-stats">
+        <div class="admin-stat" data-filter="all">
+          <div class="admin-stat-num" id="statTotal">0</div>
+          <div class="admin-stat-label">Total</div>
+        </div>
+        <div class="admin-stat" data-filter="pending">
+          <div class="admin-stat-num" id="statPending" style="color:#ffb020">0</div>
+          <div class="admin-stat-label">Pending</div>
+        </div>
+        <div class="admin-stat" data-filter="approved">
+          <div class="admin-stat-num" id="statApproved" style="color:#22c55e">0</div>
+          <div class="admin-stat-label">Approved</div>
+        </div>
+        <div class="admin-stat" data-filter="rejected">
+          <div class="admin-stat-num" id="statRejected" style="color:#ff4d6d">0</div>
+          <div class="admin-stat-label">Rejected</div>
+        </div>
+      </div>
+
       <div class="filters">
         <a href="#" data-filter="all" class="active">All</a>
         <a href="#" data-filter="pending">Pending</a>
         <a href="#" data-filter="approved">Approved</a>
         <a href="#" data-filter="rejected">Rejected</a>
       </div>
-      <div id="applications"></div>
+
+      <div id="applications" class="apps-list"></div>
     </div>
+
+    <footer class="foot">
+      <div class="foot-links">
+        <a href="index.html" class="foot-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Back to Site
+        </a>
+      </div>
+      <p class="foot-copy">© 2026 Eclipse Roleplay. All rights reserved.</p>
+    </footer>
   </div>
 
   <script type="module" src="admin.js"></script>

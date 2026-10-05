@@ -16,6 +16,7 @@ const dashboardPanel = document.getElementById('dashboardPanel');
 const logoutBtn = document.getElementById('logoutBtn');
 
 let currentFilter = 'all';
+let allRows = [];
 
 function showLogin() {
   loginPanel.style.display = 'block';
@@ -25,14 +26,21 @@ function showLogin() {
 function showDashboard() {
   loginPanel.style.display = 'none';
   dashboardPanel.style.display = 'block';
-  logoutBtn.style.display = 'block';
+  logoutBtn.style.display = 'inline-flex';
   loadApplications();
 }
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const msg = document.getElementById('loginMsg');
+  const btn = e.target.querySelector('button[type="submit"]');
+  const btnText = btn.querySelector('.btn-text');
+
   msg.textContent = '';
+  msg.className = 'msg';
+  btn.disabled = true;
+  btnText.textContent = 'Logging in...';
+
   try {
     await signInWithEmailAndPassword(
       auth,
@@ -40,8 +48,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
       document.getElementById('password').value
     );
   } catch (err) {
-    msg.textContent = 'Login failed: ' + err.message;
+    msg.textContent = '✗ Login failed: ' + err.message.replace('Firebase: ', '');
     msg.className = 'msg err';
+  } finally {
+    btn.disabled = false;
+    btnText.textContent = 'Login';
   }
 });
 
@@ -53,66 +64,135 @@ function esc(s) {
   }[c]));
 }
 
+function timeAgo(ts) {
+  if (!ts) return '—';
+  const d = ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts);
+  const diff = (Date.now() - d.getTime()) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+  return Math.floor(diff / 86400) + 'd ago';
+}
+
+function statusIcon(s) {
+  return { approved: '✓', pending: '⏳', rejected: '✗' }[s] || '•';
+}
+
 async function loadApplications() {
   const container = document.getElementById('applications');
-  container.innerHTML = 'Loading...';
+  container.innerHTML = '<div class="apps-loading">Loading applications...</div>';
+
   try {
     const snap = await getDocs(collection(db, 'whitelist_applications'));
-    let rows = [];
-    snap.forEach(d => rows.push({ id: d.id, ...d.data() }));
-    if (currentFilter !== 'all') rows = rows.filter(r => r.status === currentFilter);
-    rows.sort((a, b) => (b.created_at?.seconds || 0) - (a.created_at?.seconds || 0));
+    allRows = [];
+    snap.forEach(d => allRows.push({ id: d.id, ...d.data() }));
 
-    if (!rows.length) {
-      container.innerHTML = '<p class="msg">No applications found.</p>';
-      return;
-    }
+    document.getElementById('statTotal').textContent = allRows.length;
+    document.getElementById('statPending').textContent = allRows.filter(r => r.status === 'pending').length;
+    document.getElementById('statApproved').textContent = allRows.filter(r => r.status === 'approved').length;
+    document.getElementById('statRejected').textContent = allRows.filter(r => r.status === 'rejected').length;
 
-    container.innerHTML = rows.map(r => `
-      <div class="app">
-        <h3>${esc(r.player_name)}</h3>
-        <p>Serial: ${esc(r.serial)}</p>
-        <p>IC: ${esc(r.ic_name)}</p>
-        <p>Discord: ${esc(r.discord || '-')}</p>
-        <p>Reason: ${esc(r.reason || '-')}</p>
-        <p>Status: <span class="status ${r.status}">${r.status}</span></p>
-        <div class="actions">
-          ${r.status !== 'approved' ? `<button class="approve" data-id="${r.id}" data-action="approve">Approve</button>` : ''}
-          ${r.status !== 'rejected' ? `<button class="reject" data-id="${r.id}" data-action="reject">Reject</button>` : ''}
-          <button class="delete" data-id="${r.id}" data-action="delete">Delete</button>
-        </div>
-      </div>
-    `).join('');
-
-    container.querySelectorAll('button[data-action]').forEach(btn => {
-      btn.addEventListener('click', () => doAction(btn.dataset.id, btn.dataset.action));
-    });
+    renderRows();
   } catch (err) {
     console.error(err);
-    container.innerHTML = '<p class="msg err">Error: ' + err.message + '</p>';
+    container.innerHTML = '<div class="apps-empty">✗ Error: ' + esc(err.message) + '</div>';
   }
 }
 
-async function doAction(id, action) {
-  if (action === 'delete' && !confirm('Delete this application?')) return;
+function renderRows() {
+  const container = document.getElementById('applications');
+  let rows = allRows;
+  if (currentFilter !== 'all') rows = rows.filter(r => r.status === currentFilter);
+  rows.sort((a, b) => (b.created_at?.seconds || 0) - (a.created_at?.seconds || 0));
+
+  if (!rows.length) {
+    container.innerHTML = '<div class="apps-empty">No ' + (currentFilter !== 'all' ? currentFilter : '') + ' applications found.</div>';
+    return;
+  }
+
+  container.innerHTML = rows.map(r => `
+    <div class="app-card">
+      <div class="app-card-top">
+        <div class="app-avatar">${esc((r.player_name || '?').charAt(0).toUpperCase())}</div>
+        <div class="app-info">
+          <h3 class="app-name">${esc(r.player_name)}</h3>
+          <div class="app-status-badge status-${r.status}">
+            <span>${statusIcon(r.status)}</span>
+            <span>${r.status}</span>
+          </div>
+        </div>
+        <div class="app-time">${timeAgo(r.created_at)}</div>
+      </div>
+
+      <div class="app-details">
+        <div class="app-detail">
+          <span class="app-detail-label">Serial</span>
+          <span class="app-detail-value mono">${esc(r.serial)}</span>
+        </div>
+        <div class="app-detail">
+          <span class="app-detail-label">IC Name</span>
+          <span class="app-detail-value">${esc(r.ic_name)}</span>
+        </div>
+        <div class="app-detail">
+          <span class="app-detail-label">Discord</span>
+          <span class="app-detail-value">${esc(r.discord || '—')}</span>
+        </div>
+        ${r.reason ? `
+        <div class="app-detail full">
+          <span class="app-detail-label">Reason</span>
+          <span class="app-detail-value">${esc(r.reason)}</span>
+        </div>` : ''}
+      </div>
+
+      <div class="app-actions">
+        ${r.status !== 'approved' ? `<button class="btn-action approve" data-id="${r.id}" data-action="approve">✓ Approve</button>` : ''}
+        ${r.status !== 'rejected' ? `<button class="btn-action reject" data-id="${r.id}" data-action="reject">✗ Reject</button>` : ''}
+        <button class="btn-action delete" data-id="${r.id}" data-action="delete">🗑 Delete</button>
+      </div>
+    </div>
+  `).join('');
+
+  container.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', () => doAction(btn.dataset.id, btn.dataset.action, btn));
+  });
+}
+
+async function doAction(id, action, btn) {
+  if (action === 'delete' && !confirm('Delete this application permanently?')) return;
+
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '...';
+
   try {
     if (action === 'approve') await updateDoc(doc(db, 'whitelist_applications', id), { status: 'approved' });
     if (action === 'reject')  await updateDoc(doc(db, 'whitelist_applications', id), { status: 'rejected' });
     if (action === 'delete')  await deleteDoc(doc(db, 'whitelist_applications', id));
-    loadApplications();
+    await loadApplications();
   } catch (err) {
     alert('Error: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = originalText;
   }
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filters a').forEach(a => {
+    a.classList.toggle('active', a.dataset.filter === f);
+  });
+  renderRows();
 }
 
 document.querySelectorAll('.filters a').forEach(a => {
   a.addEventListener('click', (e) => {
     e.preventDefault();
-    document.querySelectorAll('.filters a').forEach(x => x.classList.remove('active'));
-    a.classList.add('active');
-    currentFilter = a.dataset.filter;
-    loadApplications();
+    setFilter(a.dataset.filter);
   });
+});
+
+document.querySelectorAll('.admin-stat').forEach(s => {
+  s.addEventListener('click', () => setFilter(s.dataset.filter));
 });
 
 onAuthStateChanged(auth, user => {
